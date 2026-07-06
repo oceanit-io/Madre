@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" aria-label="Diamante Prata de 15 Reais">
+  <!-- Diamante rosa P15 — extraído do logo oficial pratade15reais.com.br
+       Estilo line-art (stroke only) p/ ficar leve como marca d'água. -->
+  <g fill="none" stroke="#ff7db4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Forma principal (octogonal de joalheria) -->
+    <path d="M 30,28 L 70,28 L 88,48 L 50,92 L 12,48 Z" />
+    <!-- Linhas internas do brilhante (facetas) -->
+    <path d="M 12,48 L 88,48" />
+    <path d="M 30,28 L 50,48 L 70,28" />
+    <path d="M 50,48 L 50,92" />
+    <path d="M 12,48 L 50,48" />
+    <path d="M 88,48 L 50,48" />
+  </g>
+</svg>

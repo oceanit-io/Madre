@@ -1,0 +1,21 @@
+{
+  "buildCommand": "rm -rf .next/cache && next build",
+  "crons": [
+    {
+      "path": "/api/cron/mensalidades",
+      "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/cron/tray-sync",
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/lembretes-cadastro",
+      "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/mensagem-diaria",
+      "schedule": "0 10 * * *"
+    }
+  ]
+}

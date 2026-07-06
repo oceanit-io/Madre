@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 420" width="420" height="420">
+  <rect x="0" y="0" width="420" height="420" fill="#FFF0F4"/>
+  <circle cx="210" cy="210" r="160" fill="none" stroke="#E8396A" stroke-width="3"/>
+  <circle cx="210" cy="210" r="146" fill="none" stroke="#E8396A" stroke-width="0.7"/>
+  <g transform="translate(210, 115)">
+    <polygon points="-12,-4 12,-4 15,3 0,20 -15,3" fill="none" stroke="#E8396A" stroke-width="1.5"/>
+    <line x1="-12" y1="-4" x2="-6" y2="3" stroke="#E8396A" stroke-width="1"/>
+    <line x1="-6" y1="3" x2="6" y2="3" stroke="#E8396A" stroke-width="1"/>
+    <line x1="6" y1="3" x2="12" y2="-4" stroke="#E8396A" stroke-width="1"/>
+    <line x1="-6" y1="3" x2="0" y2="20" stroke="#E8396A" stroke-width="1"/>
+    <line x1="6" y1="3" x2="0" y2="20" stroke="#E8396A" stroke-width="1"/>
+  </g>
+  <text x="210" y="200" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="38" font-style="italic" fill="#1A1A1A" font-weight="400">Loja de Prata</text>
+  <line x1="160" y1="218" x2="260" y2="218" stroke="#E8396A" stroke-width="0.7"/>
+  <text x="210" y="270" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="48" fill="#E8396A" font-weight="500" letter-spacing="3">925</text>
+  <text x="210" y="300" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="9" fill="#E8396A" letter-spacing="3" font-weight="500">PRATA LEGÍTIMA</text>
+</svg>
