@@ -42,6 +42,9 @@ tests/load/reports/*.json
 # vercel
 .vercel
 
+# arquivos locais de operação (dumps de schema, exports, etc)
+_local/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
