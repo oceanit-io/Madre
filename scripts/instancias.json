@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "slug": "teste",
+    "nome": "Cliente Teste",
+    "supabaseRef": "bcshyedkqssuzpucpkiy",
+    "vercelProject": "madre-teste",
+    "vercelProjectId": "prj_g0bdHVFi0bCWhEEjcth6OOiDctd8",
+    "dominio": "teste.lojadeprata925.com.br",
+    "env": "test",
+    "criadoEm": "2026-07-07T13:56:26.669Z"
+  }
+]

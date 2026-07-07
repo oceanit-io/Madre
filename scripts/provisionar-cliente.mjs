@@ -253,7 +253,7 @@ function saveCreds(slug, data) {
 // -----------------------------------------------------------------------------
 function parseArgs() {
   const args = process.argv.slice(2)
-  const out = { dryRun: false, yes: false, plan: 'free' }
+  const out = { dryRun: false, yes: false, plan: 'free', supabaseRef: null }
   for (let i = 0; i < args.length; i++) {
     const a = args[i]
     if (a === '--slug') out.slug = args[++i]
@@ -262,6 +262,7 @@ function parseArgs() {
     else if (a === '--yes' || a === '-y') out.yes = true
     else if (a.startsWith('--plan=')) out.plan = a.slice('--plan='.length)
     else if (a === '--plan') out.plan = args[++i]
+    else if (a === '--supabase-ref') out.supabaseRef = args[++i]
   }
   return out
 }
@@ -282,8 +283,8 @@ async function main() {
     throw new Error(`slug "${opts.slug}" já existe em instancias.json`)
   }
 
-  const nomeSupabase = `Madre-${opts.slug}`
-  const nomeVercel = `Madre-${opts.slug}`
+  const nomeSupabase = `madre-${opts.slug}`
+  const nomeVercel = `madre-${opts.slug}`
   const dominio = `${opts.slug}.${DOMAIN_ROOT}`
   const appUrl = `https://${dominio}`
 
@@ -307,9 +308,22 @@ async function main() {
     // fecha o readline temporariamente pro plano ser lido; reabre pra confirmação
   }
 
-  const adminPinMaster = randomPin(24)
-  const adminCookieSecret = randomPin(32)
-  const dbPass = randomPin(24)
+  // Se estamos retomando, aproveita credenciais já geradas (não regenera —
+  // o Supabase já foi criado com essa dbPass, e ADMIN_PIN novo obrigaria
+  // a atualizar tudo). Fora do modo retomada, gera aleatório.
+  let adminPinMaster, adminCookieSecret, dbPass
+  const credsFile = resolve(CREDS_DIR, opts.slug, 'credenciais.json')
+  if (opts.supabaseRef && existsSync(credsFile)) {
+    const prev = JSON.parse(readFileSync(credsFile, 'utf8'))
+    adminPinMaster = prev.adminPinMaster || randomPin(24)
+    adminCookieSecret = prev.adminCookieSecret || randomPin(32)
+    dbPass = prev.supabaseDbPass || randomPin(24)
+    console.log(`   (retomando com credenciais de ${credsFile})`)
+  } else {
+    adminPinMaster = randomPin(24)
+    adminCookieSecret = randomPin(32)
+    dbPass = randomPin(24)
+  }
 
   // -------------------- Plano de execução --------------------
   console.log('\n===================================================================')
@@ -358,32 +372,39 @@ async function main() {
   rl.close()
 
   // -------------------- Execução --------------------
-  console.log('\n▶ 1/6  Criando projeto Supabase...')
-  const sbProj = await supabaseCreateProject({
-    name: nomeSupabase,
-    dbPass,
-    plan: opts.plan,
-  })
-  const ref = sbProj.ref || sbProj.id
-  console.log(`   ref = ${ref}`)
-  // salva as credenciais o quanto antes, caso o script falhe adiante
-  saveCreds(opts.slug, {
-    slug: opts.slug,
-    nome: opts.nome,
-    supabaseRef: ref,
-    supabaseDbPass: dbPass,
-    adminPinMaster,
-    adminCookieSecret,
-    criadoEm: new Date().toISOString(),
-  })
-  console.log(`   credenciais parciais salvas em _local/creds/${opts.slug}/`)
+  let ref
+  if (opts.supabaseRef) {
+    // Modo retomada: pula 1/3 (Supabase + migrations já rodaram).
+    ref = opts.supabaseRef
+    console.log(`\n⏭  Passos 1-3 pulados (--supabase-ref ${ref})`)
+  } else {
+    console.log('\n▶ 1/6  Criando projeto Supabase...')
+    const sbProj = await supabaseCreateProject({
+      name: nomeSupabase,
+      dbPass,
+      plan: opts.plan,
+    })
+    ref = sbProj.ref || sbProj.id
+    console.log(`   ref = ${ref}`)
+    // salva as credenciais o quanto antes, caso o script falhe adiante
+    saveCreds(opts.slug, {
+      slug: opts.slug,
+      nome: opts.nome,
+      supabaseRef: ref,
+      supabaseDbPass: dbPass,
+      adminPinMaster,
+      adminCookieSecret,
+      criadoEm: new Date().toISOString(),
+    })
+    console.log(`   credenciais parciais salvas em _local/creds/${opts.slug}/`)
 
-  console.log('\n▶ 2/6  Aguardando Supabase ficar ACTIVE_HEALTHY (leva 1-3 min)...')
-  await supabaseWaitHealthy(ref)
-  console.log(' pronto')
+    console.log('\n▶ 2/6  Aguardando Supabase ficar ACTIVE_HEALTHY (leva 1-3 min)...')
+    await supabaseWaitHealthy(ref)
+    console.log(' pronto')
 
-  console.log('\n▶ 3/6  Aplicando 44 migrations no banco novo...')
-  await aplicarMigrations(ref)
+    console.log('\n▶ 3/6  Aplicando 44 migrations no banco novo...')
+    await aplicarMigrations(ref)
+  }
 
   console.log('\n▶ 4/6  Pegando API keys do Supabase...')
   const keys = await supabaseGetApiKeys(ref)
