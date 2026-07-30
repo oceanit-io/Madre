@@ -8,5 +8,25 @@
     "dominio": "teste.lojadeprata925.com.br",
     "env": "test",
     "criadoEm": "2026-07-07T13:56:26.669Z"
+  },
+  {
+    "slug": "velour",
+    "nome": "Velour Parfums",
+    "supabaseRef": "nejrnrbebiqegylpwaew",
+    "vercelProject": "madre-velour",
+    "vercelProjectId": "prj_gGz2H2eXD9Ae3ddBNgkRiViPjT5S",
+    "dominio": "velour.lojadeprata925.com.br",
+    "env": "test",
+    "criadoEm": "2026-07-28T12:22:47.168Z"
+  },
+  {
+    "slug": "aurea",
+    "nome": "Áurea Joias",
+    "supabaseRef": "zszvaejijifzrarifjfb",
+    "vercelProject": "madre-aurea",
+    "vercelProjectId": "prj_eSacV3zk1m8hfo8P8XMaN2zGKq2I",
+    "dominio": "aurea.lojadeprata925.com.br",
+    "env": "test",
+    "criadoEm": "2026-07-28T12:28:57.508Z"
   }
 ]
