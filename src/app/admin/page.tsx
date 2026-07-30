@@ -441,7 +441,7 @@ export default function AdminHomePage() {
         </svg>
       )
     }] : []),
-    {
+    ...(!catalogoManual ? [{
       label: 'Baixa Tray',
       href: '/admin/relatorio-tray',
       desc: 'Vendas a abater no estoque da Tray',
@@ -450,7 +450,7 @@ export default function AdminHomePage() {
           <path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/>
         </svg>
       )
-    },
+    }] : []),
     {
       label: 'Gráficos',
       href: '/admin/graficos',
