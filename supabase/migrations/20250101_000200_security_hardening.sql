@@ -28,6 +28,13 @@ drop policy if exists anon_insert_pedidos on public.pedidos;
 -- ----- 3. Policy SELECT pública de produtos (DB-01) --------------
 -- Permite leitura pública APENAS de produtos ativos com estoque > 0.
 -- Sem WITH CHECK (RLS for SELECT não usa with_check).
+--
+-- Nota: nos bancos legados, RLS já estava habilitado em produtos
+-- (habilitação manual via dashboard antes deste migration). Em bancos
+-- novos, precisa ligar aqui pra que a policy tenha efeito prático —
+-- policy sem RLS ligado é ignorada pelo Postgres.
+alter table public.produtos enable row level security;
+
 drop policy if exists "public_select_produtos_ativos" on public.produtos;
 create policy "public_select_produtos_ativos"
   on public.produtos
